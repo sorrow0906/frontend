@@ -46,7 +46,7 @@ function StoreList() {
 
   return (
     <div className="content">
-      <h1>가게 목록</h1>
+      <h1>맛집 찾기 리스트</h1>
       <table className="store-table">
         <thead>
           <tr>
