@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./NavBar.css"; // 스타일 파일 가져오기
 
 function NavBar({ contextPath = "" }) {
+
+  const [isSnbVisible, setIsSnbVisible] = useState(false);
+
+
   return (
     <nav>
-      <div className="nav-div">
+      <div className="nav-div"
+        onMouseEnter={() => setIsSnbVisible(true)} 
+        onMouseLeave={() => setIsSnbVisible(false)}>
         <Link className="nav" to={`/`}>카테고리별 맛집</Link>
         <Link className="nav" >맛집 찾기</Link>
         <Link className="nav" >모임</Link>
@@ -25,8 +31,12 @@ function NavBar({ contextPath = "" }) {
             </button>
           </div>
         </form>
-
-        <ul className="snb">
+        <ul
+          className="snb"
+          style={{ display: isSnbVisible ? "flex" : "none" }}
+          onMouseEnter={() => setIsSnbVisible(true)}
+          onMouseLeave={() => setIsSnbVisible(false)}
+        >
           <div className="submenu">
             <li><Link >한식</Link></li>
             <li><Link >일식</Link></li>
