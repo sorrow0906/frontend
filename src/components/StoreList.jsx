@@ -16,7 +16,7 @@ function StoreList() {
   const loadStores = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/stores-test",
+        "http://localhost:8080/api/stores-main",
         {
           params: { sortBy: sortStandard,
             scates: selectedScates.join(",")

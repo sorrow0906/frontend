@@ -10,7 +10,7 @@ function Header() {
         <Link className="header1" to="/">FOOD</Link>
         <Link className="header2" to="/">ing</Link>
         <Link className="header2" to="/">
-          <img src="images/chefudding.png" width="100" height="100" alt="Logo" />
+          <img src="/images/chefudding.png" width="100" height="100" alt="Logo" />
         </Link>
         <div className="hello2">
           <table border="0" align="center">

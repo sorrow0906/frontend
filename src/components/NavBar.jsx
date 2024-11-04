@@ -27,7 +27,7 @@ function NavBar({ contextPath = "" }) {
               aria-label="Search"
             />
             <button type="submit" className="btn btn-link">
-              <img src={`images/search.png`} alt="Search" />
+              <img src={`/images/search.png`} alt="Search" />
             </button>
           </div>
         </form>
