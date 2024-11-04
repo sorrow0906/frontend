@@ -4,19 +4,23 @@ import { Link } from "react-router-dom";
 import "./StoreList.css";
 
 function StoreList() {
+  // ※후에 백엔드를 거치지 않고 최초에 전체 가게 리스트를 받아 프론트엔드 부분에서 정렬하도록 수정 필요!
   const [stores, setStores] = useState([]);
   const [sortStandard, setSortStandard] = useState("pick");
+  const [selectedScates, setSelectedScates] = useState([]);
 
   useEffect(() => {
     loadStores();
-  }, [sortStandard]);
+  }, [sortStandard, selectedScates]);
 
   const loadStores = async () => {
     try {
       const response = await axios.get(
         "http://localhost:8080/api/stores-test",
         {
-          params: { sortBy: sortStandard },
+          params: { sortBy: sortStandard,
+            scates: selectedScates.join(",")
+           },
         }
       );
       console.log("API Response Data:", response.data); // 데이터 구조 확인
@@ -44,9 +48,67 @@ function StoreList() {
     return `images/icons/${categoryMap[category] || "other.png"}`;
   };
 
+  const switchScates = (scate) =>{
+    setSelectedScates((beforeScates) => 
+      beforeScates.includes(scate) ? beforeScates.filter((s) => s !== scate) : [...beforeScates, scate]
+    );
+  };
+
   return (
     <div className="content">
       <h1>맛집 찾기 리스트</h1>
+
+      {/* 선택 태그에 따른 가게 리스트 정렬 */}
+      <div className="scate-area">
+        {[
+          "한식",
+          "일식",
+          "중식",
+          "양식",
+          "세계요리",
+          "빵/디저트",
+          "차/커피",
+          "술집",
+        ].map((scate) => (
+          <div
+            key={scate}
+            className={`each-scate-area ${
+              selectedScates.includes(scate) ? "select" : ""
+            }`}
+            onClick={() => switchScates(scate)}
+          >
+            <img
+              src={getImageSrc(scate)}
+              alt={scate}
+              className="store-cate-button"
+            />
+            <p>{scate}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* 순위기준에 따른 가게 리스트 정렬 */}
+      <div className="sort-area">
+        <a
+          className={`sort-element ${
+            setSortStandard === "pick" ? "active" : ""}`}
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            setSortStandard("pick");
+          }}
+        >찜 많은 순</a>
+        <p className="sort-element">|</p>
+        <a
+          className={`sort-element ${
+            setSortStandard === "score" ? "active" : ""}`}
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            setSortStandard("score");
+          }}
+        >별점 높은 순</a>
+      </div>
       <table className="store-table">
         <thead>
           <tr>
@@ -71,7 +133,14 @@ function StoreList() {
               </td>
               <td>{store.saddr}</td>
               <td>{store.stime}</td>
-              <td>{store.spark.includes("없음") || store.spark.includes("불가") ? (<img src={"images/icons/non_parking.png"} />) : (<img src={"images/icons/parking.png"} />)}</td>
+              <td>
+                {store.spark.includes("없음") ||
+                store.spark.includes("불가") ? (
+                  <img src={"images/icons/non_parking.png"} />
+                ) : (
+                  <img src={"images/icons/parking.png"} />
+                )}
+              </td>
               <td>
                 {sortStandard === "score"
                   ? `${store.scoreArg.toFixed(1)}점`
