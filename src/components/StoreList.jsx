@@ -91,7 +91,7 @@ function StoreList() {
       <div className="sort-area">
         <a
           className={`sort-element ${
-            setSortStandard === "pick" ? "active" : ""}`}
+            sortStandard === "pick" ? "active" : ""}`}
           href="#"
           onClick={(e) => {
             e.preventDefault();
@@ -101,7 +101,7 @@ function StoreList() {
         <p className="sort-element">|</p>
         <a
           className={`sort-element ${
-            setSortStandard === "score" ? "active" : ""}`}
+            sortStandard === "score" ? "active" : ""}`}
           href="#"
           onClick={(e) => {
             e.preventDefault();

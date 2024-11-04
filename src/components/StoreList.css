@@ -87,6 +87,7 @@ h1 {
 }
 
 .sort-area {
+    margin-bottom: 10px;
     color: grey;
     display: ruby;
     float: right;
@@ -110,7 +111,7 @@ h1 {
 }*/
 
 
-.sort-element:active {
+.sort-element.active {
     color: #894f1a !important; /* 활성화된 상태일 때 버튼 색상 */
     font-weight: bold; /* 굵은 글씨 */
 }
