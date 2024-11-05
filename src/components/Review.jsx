@@ -11,11 +11,6 @@ const Review = ({ sno }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-
-      if (!sno) {
-        console.warn("sno가 존재하지 않아 데이터를 요청할 수 없습니다.");
-        return; // sno가 없으면 요청을 보내지 않음
-      }
       try {
         setLoading(true);
         const response = await axios.get("/api/review", {
@@ -23,22 +18,20 @@ const Review = ({ sno }) => {
         });
         setReviews(response.data.reviews);
         setTags(response.data.tags);
-      } catch (err) {
-        setError(err.message || "데이터를 불러오는데 문제가 발생했습니다.");
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [sno, sortBy]); // sno나 sortBy가 변경될 때마다 fetchData 호출
+  }, [sno, sortBy]);
 
   const handleSortChange = (e) => {
     setSortBy(e.target.value);
   };
 
-  if (loading) return <p>로딩 중...</p>;
-  if (error) return <p>오류 발생: {error}</p>;
+  // 로딩때문에 화면이 안 바뀌는 문제때문에 어쩔 수 없이 추가 수정 필요
+  if (loading) return;
 
   return (
     <div className="all-review-div">
