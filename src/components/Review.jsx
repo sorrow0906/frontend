@@ -61,7 +61,7 @@ const Review = ({ sno }) => {
       <div className="tag-buttons" id="tagList">
         {tags.map((tag) => (
           <button key={tag.tno} type="button" className="tag-button">
-            <img src={`/resources/tag_images/${tag.tno}.svg`} alt={tag.ttag} />
+            <img src={`/images/tag_images/${tag.tno}.svg`} alt={tag.ttag} />
             {tag.ttag}
           </button>
         ))}
