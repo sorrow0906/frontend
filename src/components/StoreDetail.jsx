@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import axios from "axios";
+import { Tabs, Tab } from '@mui/material';
+import { Box } from '@mui/material';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 import "./StoreDetail.css";
 
 function StoreDetail() {
@@ -10,6 +13,12 @@ function StoreDetail() {
     const [storeTags, setStoreTags] = useState([]);
     const [rCount, setRCount] = useState(0);
     const [isPicked, setIsPicked] = useState(false);
+
+    const [value, setValue] = useState("1"); // 초기 탭을 "1"로 설정
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
   
     useEffect(() => {
 
@@ -129,6 +138,23 @@ function StoreDetail() {
                 <p id="store-explain">{store.seg}</p>
               </div>
             </div>
+            <TabContext value={value}>
+              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                <TabList
+                  onChange={handleChange}
+                  sx={{
+                    "& .MuiTabs-scroller": {
+                      display: "ruby",
+                    },
+                  }}
+                >
+                  <Tab label="가게 정보" value="1" />
+                  <Tab label="리뷰" value="2" />
+                </TabList>
+              </Box>
+              <TabPanel value="1">Item One</TabPanel>
+              <TabPanel value="2">Item Two</TabPanel>
+            </TabContext>
           </>
         ) : (
           <p>Loading...</p>

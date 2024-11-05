@@ -104,6 +104,7 @@ function StoreList() {
             sortStandard === "score" ? "active" : ""}`}
           href="#"
           onClick={(e) => {
+            // a 태그이지만 클릭하였을 때 따로 링크를 타고 들어가는 동작은 수행하고 싶지 않을때 사용!
             e.preventDefault();
             setSortStandard("score");
           }}
