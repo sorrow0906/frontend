@@ -1,7 +1,7 @@
 // DetailMap.js
 import React, { useEffect, useRef } from "react";
 
-const DetailMap = ({ address }) => {
+const StoreMap = ({ address }) => {
   const mapContainer = useRef(null);
 
   useEffect(() => {
@@ -26,9 +26,13 @@ const DetailMap = ({ address }) => {
     };
 
     const kakaoScriptLoad = () => {
+      // api가 로드 되었을 경우  
       if (window.kakao && window.kakao.maps) {
         initializeMap();
-      } else {
+      } 
+      // api가 로드 되지 않았을 경우
+      // StoreList를 거치지 않고 바로 주소를 통해서 가게 상세화면에 들어갈 경우 
+      else {
         const script = document.createElement("script");
         script.src = "https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=1720be0e84bb5634111a38d60aad47c1&libraries=services";
         script.onload = () => {
@@ -43,7 +47,7 @@ const DetailMap = ({ address }) => {
     kakaoScriptLoad();
   }, [address]);
 
-  return <div ref={mapContainer} style={{ width: "60%", height: "520px" }} />;
+  return <div id="map" ref={mapContainer} />;
 };
 
-export default DetailMap;
+export default StoreMap;

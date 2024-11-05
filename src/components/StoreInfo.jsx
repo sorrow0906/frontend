@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import DetailMap from "./DetailMap";
+import StoreMap from "./StoreMap";
 
 const StoreInfo = ({ address, store, menus }) => {
     useEffect(() => {
@@ -32,7 +32,10 @@ const StoreInfo = ({ address, store, menus }) => {
         <h2>전화번호</h2>
         <p>{store.stel}</p>
       </div>
-      <DetailMap address={address}/>
+      <div id="map-container">
+      <p id="store-address">{address}</p>
+      <StoreMap address={address}/>
+      </div>
     </div>
   );
 };

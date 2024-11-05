@@ -6,6 +6,7 @@ import { Box } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import "./StoreDetail.css";
 import StoreInfo from "./StoreInfo";
+import Review from "./Review";
 
 function StoreDetail() {
     const { sno } = useParams();
@@ -156,7 +157,7 @@ function StoreDetail() {
                 </TabList>
               </Box>
               <TabPanel value="1"><StoreInfo address={store.saddr} store={store} menus={menus} /></TabPanel>
-              <TabPanel value="2">리뷰란</TabPanel>
+              <TabPanel value="2">{store.sno && <Review sno={store.sno}/>}</TabPanel>
             </TabContext>
           </>
         ) : (
