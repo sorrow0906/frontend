@@ -5,6 +5,7 @@ import { Tabs, Tab } from '@mui/material';
 import { Box } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import "./StoreDetail.css";
+import StoreInfo from "./StoreInfo";
 
 function StoreDetail() {
     const { sno } = useParams();
@@ -12,6 +13,7 @@ function StoreDetail() {
     const [store, setStore] = useState(null);
     const [storeTags, setStoreTags] = useState([]);
     const [rCount, setRCount] = useState(0);
+    const [menus, setMenus] = useState([]);
     const [isPicked, setIsPicked] = useState(false);
 
     const [value, setValue] = useState("1"); // 초기 탭을 "1"로 설정
@@ -38,6 +40,7 @@ function StoreDetail() {
           setStore(response.data.store);
           setStoreTags(response.data.storeTags);
           setRCount(response.data.rCount);
+          setMenus(response.data.menus);
         } catch (error) {
           console.error("Error fetching store details:", error);
         }
@@ -152,8 +155,8 @@ function StoreDetail() {
                   <Tab label="리뷰" value="2" />
                 </TabList>
               </Box>
-              <TabPanel value="1">Item One</TabPanel>
-              <TabPanel value="2">Item Two</TabPanel>
+              <TabPanel value="1"><StoreInfo address={store.saddr} store={store} menus={menus} /></TabPanel>
+              <TabPanel value="2">리뷰란</TabPanel>
             </TabContext>
           </>
         ) : (
