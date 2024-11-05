@@ -35,6 +35,7 @@ const Review = ({ sno }) => {
 
   return (
     <div className="all-review-div">
+      
       <div className="sort-area">
         <select value={sortBy} onChange={handleSortChange} className="sort-element">
           <option value="latest">최신순</option>
