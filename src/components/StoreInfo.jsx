@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import KakaoMap from "./KakaoMap";
+import DetailMap from "./DetailMap";
 
 const StoreInfo = ({ address, store, menus }) => {
     useEffect(() => {
@@ -32,7 +32,7 @@ const StoreInfo = ({ address, store, menus }) => {
         <h2>전화번호</h2>
         <p>{store.stel}</p>
       </div>
-      <KakaoMap address={address}/>
+      <DetailMap address={address}/>
     </div>
   );
 };
