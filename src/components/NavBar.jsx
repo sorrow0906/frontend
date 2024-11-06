@@ -9,13 +9,14 @@ function NavBar({ contextPath = "" }) {
 
   const [isSnbVisible, setIsSnbVisible] = useState(false);
   const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
+    position: 'absolute',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: alpha(theme.palette.common.white, 0.15),
     '&:hover': {
       backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
     marginLeft: 0,
+    marginRight: 20,
     width: '80%',
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing(1),
@@ -61,6 +62,7 @@ function NavBar({ contextPath = "" }) {
         <Link className="nav" >모임</Link>
         <Link className="nav" >찜</Link>
         
+        <div className="nav">
         <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -70,6 +72,7 @@ function NavBar({ contextPath = "" }) {
               inputProps={{ 'aria-label': 'search' }}
             />
         </Search>
+        </div>
         <ul
           className="snb"
           style={{ display: isSnbVisible ? "flex" : "none" }}

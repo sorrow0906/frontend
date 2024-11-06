@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { Input } from 'antd';
 import axios from "axios";
+import { Rate } from 'antd';
+import { Button, Flex } from 'antd';
 import "./Review.css"
+
+const { TextArea } = Input;
 
 const Review = ({ sno }) => {
   const [reviews, setReviews] = useState([]);
@@ -30,12 +35,18 @@ const Review = ({ sno }) => {
     setSortBy(e.target.value);
   };
 
-  // 로딩때문에 화면이 안 바뀌는 문제때문에 어쩔 수 없이 추가 수정 필요
+  // 로딩 때문에 화면이 안 바뀌는 문제때문에 어쩔 수 없이 추가. 차후 수정 필요
   if (loading) return;
 
   return (
     <div className="all-review-div">
-      
+      <div className="form-group">
+      <Flex vertical gap="middle">
+      <Rate allowHalf defaultValue={2.5} />
+      <TextArea size="large" rows={4} placeholder="리뷰내용을 입력해주세요." maxLength={3} />
+      <Button size="large" style={{ backgroundColor: "#8b4513" }} type="primary">리뷰 작성</Button>
+      </Flex>
+      </div>
       <div className="sort-area">
         <select value={sortBy} onChange={handleSortChange} className="sort-element">
           <option value="latest">최신순</option>
@@ -48,6 +59,8 @@ const Review = ({ sno }) => {
         {reviews.map((review) => (
           <div key={review.id} className="review-container">
             <div className="review-item review-item-left">{review.dateToString}</div>
+            <div className="review-item review-item-left" style={{ top: "35px" }}><strong>{review.member.mnick}</strong></div>
+            <div class="review-item review-item-left" style={{ top: "60px" }}><Rate disabled defaultValue={review.rstar} /></div>
             <div className="review-item-content">{review.rcomm}</div>
           </div>
         ))}

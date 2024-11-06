@@ -122,9 +122,7 @@ ul li { list-style : none; }
     height : 20px;
 }
 
-.search-form {
-    width : 80%;
-    display : flex;
-    justify-content : center;
-    align-items : center;
+.nav:nth-child(5):hover {
+    color:#b67a47;
+    text-decoration : none;
 }
