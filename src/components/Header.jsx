@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Header.css";
 
-function Header({ loggedIn }) {
+
+function Header({ loggedIn, onLogout }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -15,8 +16,25 @@ function Header({ loggedIn }) {
           }
         })
         .catch((error) => console.error("Error fetching session user:", error));
+    }else{
+      setUser(null);
     }
   }, [loggedIn]);
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("/api/logout", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (response.ok) {
+        onLogout(); // App 컴포넌트에서 전달된 로그아웃 상태 변경 함수 호출
+      }
+    } catch (error) {
+      console.error("로그아웃 요청 실패:", error);
+    }
+  };
+
 
   return (
     <header>
@@ -49,7 +67,7 @@ function Header({ loggedIn }) {
                       마이페이지
                     </Link>{" "}
                     |{" "}
-                    <a className="helloBox" href="/logout">
+                    <a className="helloBox" onClick={handleLogout}>
                       로그아웃
                     </a>
                   </td>

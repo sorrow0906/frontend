@@ -9,13 +9,12 @@ import Layout from "./components/Layout";
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
-  const handleLoginSuccess = () => {
-    setLoggedIn(true);
-  };
+  const handleLoginSuccess = () => setLoggedIn(true);
+  const handleLogout = () => setLoggedIn(false);
 
   return (
     <div className="App">
-      <Layout loggedIn={loggedIn}>
+      <Layout loggedIn={loggedIn} onLogout={handleLogout}>
         <Routes>
           <Route path="/" element={<StoreList />} />
           <Route path="/store/:sno" element={<StoreDetail />} />
