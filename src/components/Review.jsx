@@ -13,8 +13,23 @@ const Review = ({ sno }) => {
   const [sortBy, setSortBy] = useState("latest");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [loggedInUser, setLoggedInUser] = useState(null); // 로그인된 사용자 정보
 
   useEffect(() => {
+
+    const checkLoginStatus = async () => {
+      try {
+        const sessionResponse = await axios.get("/api/session-user");
+        if (sessionResponse.data.loggedIn) {
+          setLoggedInUser(sessionResponse.data.user);
+        } else {
+          setLoggedInUser(null);
+        }
+      } catch (err) {
+        console.error("로그인 확인 중 오류 발생:", err);
+      }
+    };
+
     const fetchData = async () => {
       try {
         setLoading(true);
@@ -27,6 +42,8 @@ const Review = ({ sno }) => {
         setLoading(false);
       }
     };
+
+    checkLoginStatus();
 
     fetchData();
   }, [sno, sortBy]);
@@ -41,11 +58,16 @@ const Review = ({ sno }) => {
   return (
     <div className="all-review-div">
       <div className="form-group">
+      {loggedInUser ? (
       <Flex vertical gap="middle">
       <Rate allowHalf defaultValue={2.5} />
       <TextArea size="large" rows={4} placeholder="리뷰내용을 입력해주세요." maxLength={3} />
       <Button size="large" style={{ backgroundColor: "#8b4513" }} type="primary">리뷰 작성</Button>
       </Flex>
+      ) : (
+        // 로그인되지 않은 사용자에게 표시할 메시지
+        <p>로그인 후 리뷰 작성이 가능합니다.</p>
+      )}
       </div>
       <div className="sort-area">
         <select value={sortBy} onChange={handleSortChange} className="sort-element">
