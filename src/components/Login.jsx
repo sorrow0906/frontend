@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import "./Login.css"
+import "./Login.css";
 
-function Login() {
+function Login({ onLoginSuccess }) {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -21,6 +21,7 @@ function Login() {
       });
 
       if (response.ok) {
+        onLoginSuccess(); // 로그인 성공 시 콜백 호출
         navigate('/'); // 로그인 성공 시 메인 페이지로 이동
       } else {
         const data = await response.json();

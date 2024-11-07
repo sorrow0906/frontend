@@ -1,20 +1,25 @@
-import logo from "./logo.svg";
-import React from "react";
+import React, { useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import StoreList from "./components/StoreList";
-import StoreDetail from "./components/StoreDetail"
+import StoreDetail from "./components/StoreDetail";
 import Login from "./components/Login";
-import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const handleLoginSuccess = () => {
+    setLoggedIn(true);
+  };
+
   return (
     <div className="App">
-      <Layout>
+      <Layout loggedIn={loggedIn}>
         <Routes>
           <Route path="/" element={<StoreList />} />
           <Route path="/store/:sno" element={<StoreDetail />} />
-          <Route path="/login" element={<Login/>} />
+          <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
         </Routes>
       </Layout>
     </div>

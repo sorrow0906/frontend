@@ -3,10 +3,10 @@ import Header from "./Header";
 import Footer from "./Footer";
 import NavBar from "./NavBar";
 
-function Layout({ children }) {
+function Layout({ children, loggedIn }) {
   return (
     <div>
-      <Header />
+      <Header loggedIn={loggedIn}/>
       <NavBar />
       <main>{children}</main>
       <Footer />
