@@ -14,6 +14,23 @@ const Review = ({ sno }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [loggedInUser, setLoggedInUser] = useState(null); // 로그인된 사용자 정보
+  const [newReview, setNewReview] = useState({
+    rstar: 3,
+    rcomm: ""
+  });
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get("/api/review", {
+        params: { sno, sortBy },
+      });
+      setReviews(response.data.reviews);
+      setTags(response.data.tags);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
 
@@ -29,20 +46,7 @@ const Review = ({ sno }) => {
         console.error("로그인 확인 중 오류 발생:", err);
       }
     };
-
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get("/api/review", {
-          params: { sno, sortBy },
-        });
-        setReviews(response.data.reviews);
-        setTags(response.data.tags);
-      } finally {
-        setLoading(false);
-      }
-    };
-
+    
     checkLoginStatus();
 
     fetchData();
@@ -52,6 +56,33 @@ const Review = ({ sno }) => {
     setSortBy(e.target.value);
   };
 
+  const handleReviewSubmit = async () => {
+    if (!loggedInUser) {
+      alert("리뷰를 등록하려면 로그인을 해주세요.");
+      return;
+    }
+
+    try {
+      const response = await axios.post("/api/review-submit", {
+        sno,
+        rstar: newReview.rstar,
+        rcomm: newReview.rcomm
+      });
+
+      if (response.status === 200) {
+        alert("리뷰가 등록되었습니다.");
+        setNewReview({ rstar: 3, rcomm: "" });
+        setReviews((prevReviews) => [...prevReviews, response.data.newReview]);
+      
+        fetchData();
+      }
+    } catch (error) {
+      console.error("리뷰 등록 중 오류 발생:", error);
+      alert("리뷰 등록 중 오류가 발생했습니다.");
+    }
+  };
+
+
   // 로딩 때문에 화면이 안 바뀌는 문제때문에 어쩔 수 없이 추가. 차후 수정 필요
   if (loading) return;
 
@@ -60,9 +91,9 @@ const Review = ({ sno }) => {
       <div className="form-group">
       {loggedInUser ? (
       <Flex vertical gap="middle">
-      <Rate allowHalf defaultValue={2.5} />
-      <TextArea size="large" rows={4} placeholder="리뷰내용을 입력해주세요." maxLength={3} />
-      <Button size="large" style={{ backgroundColor: "#8b4513" }} type="primary">리뷰 작성</Button>
+      <Rate name="rstar" value={newReview.rstar} defaultValue={3} onChange={(value) => setNewReview((prev) => ({ ...prev, rstar: value }))} />
+      <TextArea name="rcomm" value={newReview.rcomm} size="large" rows={4} placeholder="리뷰내용을 입력해주세요." maxLength={300} onChange={(e) => setNewReview((prev) => ({ ...prev, rcomm: e.target.value }))} />
+      <Button size="large" style={{ backgroundColor: "#8b4513" }} type="primary" onClick={handleReviewSubmit}>리뷰 작성</Button>
       </Flex>
       ) : (
         // 로그인되지 않은 사용자에게 표시할 메시지
@@ -84,17 +115,18 @@ const Review = ({ sno }) => {
             <div className="review-item review-item-left" style={{ top: "35px" }}><strong>{review.member.mnick}</strong></div>
             <div class="review-item review-item-left" style={{ top: "60px" }}><Rate disabled defaultValue={review.rstar} /></div>
             <div className="review-item-content">{review.rcomm}</div>
+            <div className="review-tags">{review.tags.map((tag) => (<span class="tag-label">{tag.ttag}</span>))}</div>
           </div>
         ))}
       </div>
-      <div className="tag-buttons" id="tagList">
+      {/* <div className="tag-buttons" id="tagList">
         {tags.map((tag) => (
           <button key={tag.tno} type="button" className="tag-button">
             <img src={`/images/tag_images/${tag.tno}.svg`} alt={tag.ttag} />
             {tag.ttag}
           </button>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };
