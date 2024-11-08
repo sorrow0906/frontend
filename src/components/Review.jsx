@@ -12,7 +12,6 @@ const Review = ({ sno }) => {
   const [tags, setTags] = useState([]);
   const [sortBy, setSortBy] = useState("latest");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [loggedInUser, setLoggedInUser] = useState(null); // 로그인된 사용자 정보
   const [newReview, setNewReview] = useState({
     rstar: 3,
@@ -81,6 +80,23 @@ const Review = ({ sno }) => {
     }
   };
 
+  const handleDelete = async (rno) => {
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      try {
+        await axios.post("/api/review-delete", { rno });
+        alert("리뷰가 삭제되었습니다.");
+        setReviews((prevReviews) => prevReviews.filter((review) => review.rno !== rno));
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          alert("로그인이 필요합니다.");
+        } else {
+          console.error("리뷰 삭제 중 오류 발생:", error);
+          alert("리뷰 삭제 중 오류가 발생했습니다.");
+        }
+      }
+    }
+  };
+
 
   // 로딩 때문에 화면이 안 바뀌는 문제때문에 어쩔 수 없이 추가. 차후 수정 필요
   if (loading) return;
@@ -115,6 +131,9 @@ const Review = ({ sno }) => {
             <div className="review-item review-item-left" style={{ top: "60px" }}><Rate disabled defaultValue={review.rstar} /></div>
             <div className="review-item-content">{review.rcomm}</div>
             <div className="review-tags">{review.tags.map((tag) => (<span class="tag-label">{tag.ttag}</span>))}</div>
+            {loggedInUser && loggedInUser.mno === review.member.mno && (
+            <div style={{justifySelf: "right"}}><Button type="button" onClick={() => handleDelete(review.rno)}>삭제</Button></div>
+            )}
           </div>
         ))}
       </div>
