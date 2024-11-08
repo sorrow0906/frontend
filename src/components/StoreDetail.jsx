@@ -25,14 +25,6 @@ function StoreDetail() {
   
     useEffect(() => {
 
-        const checkPickStatus = async () => {
-            try {
-              const response = await axios.post(`/checkPick`, { sno });
-              setIsPicked(response.data === "picked");
-            } catch (error) {
-              console.error("Error checking pick status:", error);
-            }
-          };
 
       // 가게 세부 정보를 불러오는 함수
       const fetchStoreDetail = async () => {
@@ -46,25 +38,9 @@ function StoreDetail() {
           console.error("Error fetching store details:", error);
         }
       };
-      checkPickStatus();
       fetchStoreDetail();
     }, [sno]);
 
-    const togglePickStatus = async () => {
-        try {
-          const response = await axios.post(`/pick`, { sno, pfno: 1 });
-          if (response.data === "picked") {
-            setIsPicked(true);
-          } else if (response.data === "unpicked") {
-            setIsPicked(false);
-          } else {
-            alert("찜 기능을 사용하려면 로그인이 필요합니다.");
-            // navigate("/login");
-          }
-        } catch (error) {
-          console.error("Error toggling pick status:", error);
-        }
-      };
 
     const getImageSrc = (scate, sno) => {
         const storeImage = {
@@ -96,14 +72,10 @@ function StoreDetail() {
               <div className="store-head">
                 <div className="head-elements">
                   <div className="s-first-area">
-                    <a className="star-area" onClick={togglePickStatus}>
+                    <a className="star-area" >
                       <img
                         className="pickStar"
-                        src={
-                          isPicked
-                            ? "/images/store_images/bookmark_icon_full.png"
-                            : "/images/store_images/bookmark_icon.png"
-                        }
+                        src={"/images/store_images/bookmark_icon.png"}
                         alt="Star"
                       />
                     </a>

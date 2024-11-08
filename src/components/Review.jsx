@@ -46,7 +46,7 @@ const Review = ({ sno }) => {
         console.error("로그인 확인 중 오류 발생:", err);
       }
     };
-    
+
     checkLoginStatus();
 
     fetchData();
@@ -57,11 +57,6 @@ const Review = ({ sno }) => {
   };
 
   const handleReviewSubmit = async () => {
-    if (!loggedInUser) {
-      alert("리뷰를 등록하려면 로그인을 해주세요.");
-      return;
-    }
-
     try {
       const response = await axios.post("/api/review-submit", {
         sno,
@@ -77,8 +72,12 @@ const Review = ({ sno }) => {
         fetchData();
       }
     } catch (error) {
-      console.error("리뷰 등록 중 오류 발생:", error);
-      alert("리뷰 등록 중 오류가 발생했습니다.");
+      if (error.response && error.response.status === 401) {
+        alert("로그인이 필요합니다.");
+      } else {
+        console.error("리뷰 등록 중 오류 발생:", error);
+        alert("리뷰 등록 중 오류가 발생했습니다.");
+      }
     }
   };
 
@@ -113,7 +112,7 @@ const Review = ({ sno }) => {
           <div key={review.id} className="review-container">
             <div className="review-item review-item-left">{review.dateToString}</div>
             <div className="review-item review-item-left" style={{ top: "35px" }}><strong>{review.member.mnick}</strong></div>
-            <div class="review-item review-item-left" style={{ top: "60px" }}><Rate disabled defaultValue={review.rstar} /></div>
+            <div className="review-item review-item-left" style={{ top: "60px" }}><Rate disabled defaultValue={review.rstar} /></div>
             <div className="review-item-content">{review.rcomm}</div>
             <div className="review-tags">{review.tags.map((tag) => (<span class="tag-label">{tag.ttag}</span>))}</div>
           </div>

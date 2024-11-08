@@ -48,8 +48,8 @@ function Header({ loggedIn, onLogout }) {
         </Link>
         <div className="hello2">
           <table border="0">
-            {user ? (
-              <>
+            <tbody>
+              {user ? (
                 <tr>
                   <td align="center">
                     <img
@@ -60,39 +60,40 @@ function Header({ loggedIn, onLogout }) {
                     />
                     <p>{user.mname}님, 안녕하세요!</p>
                   </td>
-                  </tr>
-                  <tr>
-                  <td align="center">
-                    <Link className="helloBox" to="/myPage">
-                      마이페이지
-                    </Link>{" "}
-                    |{" "}
-                    <a className="helloBox" onClick={handleLogout}>
-                      로그아웃
-                    </a>
-                  </td>
                 </tr>
-              </>
-            ) : (
-              <>
+              ) : (
                 <tr>
                   <td align="center">
                     <p>어서오세요!</p>
                   </td>
-                  </tr>
-                  <tr>
-                  <td align="center">
-                    <Link className="helloBox" to="/registerSelect">
-                      회원가입
-                    </Link>{" "}
-                    |{" "}
-                    <Link className="helloBox" to="/login">
-                      로그인
-                    </Link>
-                  </td>
                 </tr>
-              </>
-            )}
+              )}
+              <tr>
+                <td align="center">
+                  {user ? (
+                    <>
+                      <Link className="helloBox" to="/myPage">
+                        마이페이지
+                      </Link>{" "}
+                      |{" "}
+                      <a className="helloBox" onClick={handleLogout}>
+                        로그아웃
+                      </a>
+                    </>
+                  ) : (
+                    <>
+                      <Link className="helloBox" to="/registerSelect">
+                        회원가입
+                      </Link>{" "}
+                      |{" "}
+                      <Link className="helloBox" to="/login">
+                        로그인
+                      </Link>
+                    </>
+                  )}
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>
